@@ -1,225 +1,157 @@
-🛠️ TUIDE – Specification Document
-📌 Overview
-Name: TUIDE
-Type: Terminal IDE
-UI Framework: Textual (Textualize)
-Language: Python 3.11+
-Audience: Senior developers, tinkerers, systems developers, terminal lovers
-Goals:
+# TUIDE - Terminal User Interface Development Environment
 
-Terminal-native IDE experience
+**TUIDE** (pronounced "too-ee-dee" or like "GUIDE" with a "T") aims to be a lightweight, extensible, and keyboard-centric terminal-based IDE or code editor, built using Python and the [Textual](https://github.com/Textualize/textual) TUI framework.
 
-Fully programmable via Python
+It's designed for developers who love the terminal but desire features typically found in graphical IDEs, such as LSP support, code navigation, and a more integrated project management experience than a simple editor + terminal setup.
 
-JSON-driven configuration cascade
+## ✨ Core Goals & Philosophy
 
-Out-of-the-box support for Python and SQL
+*   **Terminal First**: Embrace the terminal environment. Fast, efficient, and available everywhere.
+*   **Keyboard Centric**: Most operations should be achievable quickly via keyboard shortcuts and a command palette.
+*   **Extensible**: Allow users to add functionality through Python macros/plugins and custom configurations.
+*   **LSP Powered**: Leverage the Language Server Protocol for rich language features (completion, diagnostics, navigation).
+*   **Python & Textual**: Built with modern Python and the excellent Textual framework for a rich TUI.
+*   **Resource Efficient**: Aim to be lighter than many Electron-based IDEs.
+*   **Configurable**: Hierarchical configuration system (default, user, project) for easy customization.
 
-Extensible support for Language Server Protocol (LSP)
+## 🚀 Getting Started
 
-Integration for run/debug/test macros and string-substitution-based commands
+TUIDE is a terminal-based IDE built with Python and Textual.
 
-🔧 Features
+1.  **Prerequisites**:
+    *   Python 3.11 or newer.
+    *   `pip` (Python package installer).
 
-1. 📂 Project Configuration Cascade
-   TUIDE reads a hierarchy of JSON configuration files:
+2.  **Installation / Setup**:
+    *   Clone the repository:
+      ```bash
+      git clone [Repository URL Placeholder] # Replace with actual URL later
+      cd tuide
+      ```
+    *   Install dependencies:
+      ```bash
+      pip install -r requirements.txt
+      ```
 
-.tuide/config.json (project-local)
+3.  **Running TUIDE**:
+    *   From the root `tuide` directory of the cloned repository, run:
+      ```bash
+      python tuide/main.py [path_to_project_directory_or_file]
+      ```
+    *   If no path is provided, TUIDE will open in the current working directory from where you execute the command.
+    *   Examples:
+        *   `python tuide/main.py .` (Opens current directory)
+        *   `python tuide/main.py /path/to/your/project`
+        *   `python tuide/main.py /path/to/your/file.py` (Opens the file and its directory in explorer)
 
-~/.config/tuide/config.json (user-global)
+4.  **Configuration**:
+    *   TUIDE loads configurations in the following order (later files override earlier ones):
+        1.  `tuide/config/default.json` (Ships with TUIDE)
+        2.  User global: `~/.config/tuide/config.json` (on Linux/macOS) or platform equivalent (exact path might vary based on OS standards, currently `ConfigManager` needs explicit paths).
+        3.  Project local: `[project_root]/.tuide/config.json`
+    *   The system-wide configuration (e.g., `/etc/tuide/config.json`) is planned but not yet implemented in `ConfigManager`.
+    *   To customize, copy `tuide/config/default.json` to your user or project location and modify it.
+    *   **LSP Servers**: For language features like auto-completion and diagnostics, you need to install the respective Language Server Protocol (LSP) servers. For Python, `pylsp` is recommended (`pip install python-lsp-server[all]`). Check `default.json` for `lsp_servers` configurations and ensure the `command` is correct for your setup and the server is `enabled: true`.
 
-/etc/tuide/config.json (system-global)
+5.  **Macros**:
+    *   Create a directory named `.tuide/macros/` in your project's root.
+    *   Place Python files (`*.py`) in this directory. Each file should contain a function `run_macro(app_context)` which will be callable from TUIDE (e.g., via command palette, planned).
 
-Each config file can define:
 
-json5
-Copy
-Edit
-{
-"colors": {
-"background": "#1e1e1e",
-"keyword": "#569CD6"
-},
-"file_associations": {
-".py": "python",
-".sql": "sql"
-},
-"python": {
-"run": "/bin/python3 %current_file_path%",
-"debug": "python-debugger %current_file_path%",
-"test": "pytest %current_dir%"
-},
-"macros": {
-"sort_imports": "python -m isort %current_file_path%"
-}
-} 2. 🧠 Language Service Provider Integration (LSP)
-Built-in Python and SQL LSP clients
+## 🌟 Features
 
-Extendable via Python plugin modules (tuide/lsp_plugins)
+*   **Project Configuration Cascade**: ✅ Implemented. (Default, User, Project settings via `ConfigManager`).
+*   **LSP Integration**: 🟡 Initial stub implemented for LSP client communication. Full support for specific languages (e.g., Python via pylsp) is in progress.
+*   **Syntax Highlighting & Folding**: ✅ Textual's `TextArea` provides syntax highlighting via Pygments if language is set. Tree-sitter integration for advanced highlighting and folding is planned. Basic folding is inherent to `TextArea`.
+*   **Python Macros**: ✅ Implemented. (Macros loaded from `[project_root]/.tuide/macros/` via `MacroRunner`).
+*   **Debug/Run/Test Instructions**: ✅ Implemented. (Custom commands via `CommandRunner`, output in `TerminalWidget`).
+*   **Textual-based TUI Interface**:
+    *   Tabbed code editors (`EditorWidget` based on `TextArea`): ✅ Implemented.
+    *   Dockable file explorer (`FileExplorerWidget`): ✅ Implemented (defaults to left dock).
+    *   Integrated terminal output area (`TerminalWidget`): ✅ Implemented (for command output, not yet a fully interactive user-toggleable panel).
+    *   Resizable panels: ✅ Provided by Textual's layout system.
+    *   Command palette (`Ctrl+P`): 🟡 Bound, but placeholder/planned.
+    *   Status bar and notifications: ✅ Basic status via Footer; `app.notify` for notifications.
+    *   Themeable via config: ✅ Basic theming supported via `default.json` (theme colors can be set).
+*   **Code Navigation and Refactoring**: ⏳ LSP-powered (Planned).
+*   **Build System Integration**: ⏳ (Planned).
+*   **Version Control (Git) Integration**: ⏳ (Planned).
+*   **Tooling and Templates**: ⏳ (Planned - e.g., project creation from templates, common tasks).
 
-Supports hover, go-to-definition, completion, diagnostics
 
-LSP configurations mapped per extension/language in config files
+## 🏗️ Core Architecture
 
-3. 🖍️ Syntax Highlighting & Folding
-   Tree-sitter-based syntax highlighting (planned)
-
-Built-in support for folding by bracket pairs and indentation
-
-Language grammars defined via config
-
-4. 🧩 Python Macros
-   User-defined Python scripts inside .tuide/macros/\*.py
-
-Macros can:
-
-Modify files
-
-Interact with the terminal
-
-Define UI dialogs
-
-Executed via keybindings or commands in the command palette
-
-5. 🧪 Debug/Run/Test Instructions
-   Commands are configured in JSON using string substitution:
-
-bash
-Copy
-Edit
-"/bin/python3 %current_file_path%"
-Supported substitutions:
-
-%current_file_name%
-
-%current_file_path%
-
-%current_dir%
-
-%workspace_root%
-
-%config:python.run% (nested resolution)
-
-Executed in a terminal widget or external process pane.
-
-6. 🧵 Textual-based TUI Interface
-   Tabbed code editors (TextArea widgets)
-
-Dockable file explorer, terminal, outline/symbols
-
-Resizable panels (SplitPane layout)
-
-Command palette (Ctrl+P)
-
-Status bar and notifications
-
-Themeable via config
-
-7. 🔎 Code Navigation and Refactoring
-   LSP-powered go-to-definition, find references, rename symbol
-
-Outline view for symbols (classes, functions)
-
-Cross-file search via grep or LSP
-
-Refactoring actions via macro or LSP
-
-8. 🧰 Tooling and Templates
-   Snippet and file template engine
-
-Triggered on file creation via config
-
-Template variables support same %...% substitutions
-
-json
-Copy
-Edit
-"templates": {
-"python": {
-"main": {
-"trigger": "main.py",
-"content": "def main():\n print(\"Hello World\")\n\nif **name** == \"**main**\":\n main()"
-}
-}
-}
-🧱 Core Architecture
-📁 Directory Structure
-bash
-Copy
-Edit
+### Directory Structure
+```markdown
 tuide/
-├── core/ # Core logic, state, configuration
-├── ui/ # Textual UI components
-├── lsp/ # LSP client integration
-├── macros/ # Built-in and user macros
-├── config/ # Default config, theme presets
-├── plugins/ # Optional external integrations
-├── main.py # Entry point
-⚙️ Core Components
-Module Responsibility
-ConfigManager Load/merge JSON configs, resolve substitutions
-EditorWidget Code editor with highlighting, folding
-TerminalWidget Embedded terminal pane for command output
-CommandRunner Runs commands with variable interpolation
-MacroRunner Loads and executes Python macros
-LSPClient Manages LSP sessions per file/language
-Workspace Tracks open files, tabs, project root
+├── core/       # Core logic, state, configuration (ConfigManager, Workspace, CommandRunner, MacroRunner)
+├── ui/         # Main Textual UI components (EditorWidget, FileExplorerWidget, TerminalWidget)
+├── lsp/        # LSP client integration (LSPClient stub)
+├── widgets/    # Shared custom widgets (e.g., WelcomeWidget)
+├── macros/     # Example macros (directory for user project would be .tuide/macros/)
+├── config/     # Default configurations (default.json)
+├── plugins/    # Structure for optional external integrations (planned)
+├── main.py     # Application entry point
+└── main.tcss   # Main stylesheet for the application
+```
 
-⌨️ Key Features and Shortcuts
-Action Shortcut
-Save File Ctrl+S
-Open Command Palette Ctrl+P
-Run File F5
-Debug File F6
-Toggle Terminal Ctrl+`
-Search in Files Ctrl+Shift+F
-Symbol Navigation Ctrl+O
-Rename Symbol F2
-Run Macro Ctrl+Alt+M
+### Core Components
+*   `ConfigManager`: Loads and merges hierarchical JSON configurations (default, user, project) and resolves placeholders.
+*   `EditorWidget`: Textual `TextArea`-based widget for code editing, supports file I/O and language-specific syntax highlighting.
+*   `TerminalWidget`: Uses Textual's `RichLog` to display output from shell commands executed asynchronously.
+*   `CommandRunner`: Resolves command strings with dynamic placeholders and executes them, typically via the `TerminalWidget`.
+*   `MacroRunner`: Discovers, loads, and executes Python macros (sync/async) from `[project_root]/.tuide/macros/`, providing an application context.
+*   `LSPClient`: Initial stub for managing Language Server Protocol communications (start/stop server, send/receive messages).
+*   `Workspace`: Manages the state of the current project, including root path, open files, and the active file.
+*   `FileExplorerWidget`: UI widget based on Textual's `DirectoryTree` for browsing and selecting files/directories.
+*   `WelcomeWidget`: A simple placeholder widget displayed in the editor area when no files are open.
+*   `main.py (TUIDEApp)`: The main Textual application class, orchestrating UI and core components.
 
-🔌 Extensibility
-Plugin System
-Each plugin is a Python package with setup() function
+## ⌨️ Key Features and Shortcuts (Current)
 
-Hook points: file save, open, command palette, editor context menu
+*   `Ctrl+Q`: Quit Application
+*   `Ctrl+S`: Save Active Editor
+*   `Ctrl+W`: Close Active Tab
+*   `Ctrl+P`: Command Palette (Placeholder)
+*   File selection in Explorer: Opens file in a new tab or focuses existing tab.
 
-Register new commands and panels
+(More to be added as development progresses)
 
-python
-Copy
-Edit
-def setup(app):
-app.register_command("myplugin.say_hello", lambda: print("Hello!"))
-Custom Panels
-Users can define panels/widgets in Python and load via config:
+## 🧩 Extensibility
 
-json
-Copy
-Edit
-"panels": {
-"outline": "myplugin.panels.OutlinePanel"
-}
-📤 External Tools Support
-Ability to spawn background tasks (build systems, linters)
+*   **Configuration**: Most aspects will be configurable via JSON files.
+*   **Macros**: Users can write custom Python scripts (macros) to automate tasks or add simple features. These macros will have access to parts of the TUIDE application context.
+*   **Plugin API (Planned)**: A more formal plugin API is planned to allow deeper integration of new functionalities, such as version control integration, debug adapters, custom panels, etc.
 
-File watchers via watchdog
+## 🗺️ Roadmap & Status
 
-Git integration planned
+*   [✅] Minimal TUI editor with file I/O and tabbing.
+*   [✅] Configuration loader and command runner.
+*   [🟡] LSP integration (Client stub implemented, full features in progress).
+*   [✅] Macros and basic UI panels (File Explorer, Editor Tabs, Welcome Screen, Terminal Output).
+*   [🔜] Plugin API design and initial implementation.
+*   [⏳] Debugger support (via DAP - Debug Adapter Protocol).
+*   [⏳] Advanced Tree-sitter integration for syntax highlighting and code intelligence.
+*   [⏳] Git integration.
+*   [⏳] More UI elements (fully interactive terminal panel, status bar enhancements, etc.).
+*   [⏳] Comprehensive test suite.
 
-📅 Roadmap
-Milestone Status
-Minimal TUI editor ✅ In Dev
-Config loader + runner ✅ In Dev
-LSP integration 🔜 Planning
-Macros and panels 🔜 Planning
-Plugin API 🔜 Planning
-Debugger support ⏳ Planned
-Tree-sitter integration ⏳ Planned
-Git integration ⏳ Planned
+*(✅ Implemented, 🟡 In Progress, 🔜 Planning, ⏳ Planned)*
 
-✅ Requirements
-Python 3.11+
+## 📋 Requirements
 
-textual, watchdog, jsonschema, pygls (for LSP)
+*   Python 3.11+
+*   Dependencies (see `requirements.txt`):
+    *   `textual`
+    *   `pygls` (for LSP types, and potentially server-side features if TUIDE ever hosts one)
+    *   `watchdog` (planned for file system watching)
+    *   `jsonschema` (planned for config validation)
 
-Unix-like terminal recommended, Windows supported via rich-console
+## 🙌 Contributing
+
+Contributions are welcome! If you're interested in helping, please check out the open issues or propose new features.
+(Detailed contribution guidelines will be added later.)
+
+## 📜 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

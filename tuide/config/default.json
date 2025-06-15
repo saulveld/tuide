@@ -1,0 +1,126 @@
+{
+  "theme": {
+    "primary_background": "#1e1e1e",
+    "secondary_background": "#252526",
+    "primary_text": "#d4d4d4",
+    "secondary_text": "#808080",
+    "accent_color": "#007acc",
+    "error_color": "#f44747",
+    "warning_color": "#ffcc00",
+    "success_color": "#4caf50",
+
+    "editor": {
+      "background": "#1e1e1e",
+      "text": "#d4d4d4",
+      "line_numbers": "#858585",
+      "current_line_background": "#2a2d2e",
+      "selection_background": "#094771",
+      "highlight_matching_bracket": "#2a2d2e"
+    },
+    "tabs": {
+      "active_background": "#252526",
+      "active_foreground": "#ffffff",
+      "inactive_background": "#2d2d2d",
+      "inactive_foreground": "#808080"
+    },
+    "file_explorer": {
+      "directory_color": "#569cd6",
+      "file_color": "#d4d4d4",
+      "selected_background": "#094771",
+      "selected_foreground": "#ffffff"
+    }
+  },
+  "file_associations": {
+    ".py": "python",
+    ".python": "python",
+    ".pyw": "python",
+    ".java": "java",
+    ".js": "javascript",
+    ".ts": "typescript",
+    ".html": "html",
+    ".css": "css",
+    ".scss": "scss",
+    ".json": "json",
+    ".jsonc": "jsonc",
+    ".json5": "json5",
+    ".xml": "xml",
+    ".yaml": "yaml",
+    ".yml": "yaml",
+    ".md": "markdown",
+    ".markdown": "markdown",
+    ".sql": "sql",
+    ".sh": "shell",
+    ".bash": "shell",
+    ".zsh": "shell",
+    ".c": "c",
+    ".cpp": "cpp",
+    ".h": "c_header",
+    ".hpp": "cpp_header",
+    ".cs": "csharp",
+    ".go": "go",
+    ".rs": "rust",
+    ".php": "php",
+    ".rb": "ruby",
+    ".pl": "perl",
+    ".lua": "lua",
+    ".swift": "swift",
+    ".kt": "kotlin",
+    ".kts": "kotlin_script",
+    ".dart": "dart",
+    ".toml": "toml",
+    ".ini": "ini",
+    ".conf": "ini",
+    ".cfg": "ini",
+    ".dockerfile": "dockerfile",
+    ".gitignore": "plaintext",
+    ".txt": "plaintext"
+  },
+  "lsp_servers": {
+    "python": {
+      "command": ["pylsp"],
+      "enabled": true
+    },
+    "typescript": {
+      "command": ["typescript-language-server", "--stdio"],
+      "enabled": false
+    },
+    "javascript": {
+      "command": ["typescript-language-server", "--stdio"],
+      "enabled": false
+    },
+    "html": {
+      "command": ["vscode-html-language-server", "--stdio"],
+      "enabled": false
+    },
+    "css": {
+      "command": ["vscode-css-language-server", "--stdio"],
+      "enabled": false
+    },
+    "json": {
+      "command": ["vscode-json-language-server", "--stdio"],
+      "enabled": false
+    },
+    "yaml": {
+        "command": ["yaml-language-server", "--stdio"],
+        "enabled": false
+    },
+    "sql": {
+        "command": ["sql-language-server", "up", "--method", "stdio"],
+        "enabled": false
+    }
+  },
+  "editor_settings": {
+    "default_language": "plaintext",
+    "show_line_numbers": true,
+    "tab_size": 4,
+    "translate_tabs_to_spaces": true,
+    "auto_indent": true,
+    "highlight_current_line": true,
+    "match_brackets": true
+  },
+  "terminal_widget": {
+    "font_family": null,
+    "font_size": null,
+    "shell": null
+  }
+}

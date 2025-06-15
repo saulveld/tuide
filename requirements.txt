@@ -1,0 +1,4 @@
+textual
+pygls
+watchdog
+jsonschema
