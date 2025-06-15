@@ -1,0 +1,45 @@
+Screen {
+    layout: vertical;
+    overflow-y: hidden; /* Prevent screen scrollbar if content fits */
+}
+
+Header {
+    dock: top;
+}
+
+Footer {
+    dock: bottom;
+}
+
+#main_container {
+    layout: horizontal;
+    height: 1fr; /* Fill available vertical space between header/footer */
+    width: 100%;
+}
+
+FileExplorerWidget {
+    width: 30%;
+    max-width: 60; /* Max width for file explorer */
+    min-width: 20; /* Min width for file explorer */
+    height: 100%;
+    dock: left; /* Docks to the left of main_container */
+    overflow-y: auto;
+    border-right: solid $primary-lighten-2;
+}
+
+TabbedContent {
+    width: 1fr; /* Takes remaining width */
+    height: 100%;
+}
+
+/* Styling for EditorWidget's internal TextArea can be done here or in EditorWidget CSS */
+EditorWidget TextArea {
+    /* Example: ensure no extra borders if not desired */
+}
+
+WelcomeWidget {
+    width: 100%;
+    height: 100%;
+    content-align: center middle; /* For Static widget */
+    padding: 2;
+}
